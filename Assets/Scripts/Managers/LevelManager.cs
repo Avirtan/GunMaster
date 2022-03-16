@@ -26,7 +26,8 @@ public class LevelManager : MonoBehaviour
     {
         _stateGame = StateGame.Menu;
         _currentWayPoint = 0;
-        _enemyCountInNextWayPoint = _wayPoints[_currentWayPoint + 1].EnemyCount;
+        _player.SetPositionNextSopPoint(_wayPoints[_currentWayPoint + 1].GetComponentInChildren<StopPoint>().gameObject.transform.position);
+        _player.transform.position = _wayPoints[_currentWayPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position;
     }
 
     private void Update()
@@ -47,11 +48,40 @@ public class LevelManager : MonoBehaviour
     //обноваление позиции игра
     private void UpdatePosition()
     {
-        if (_wayPoints.Count > _currentWayPoint + 1 && _wayPoints[_currentWayPoint + 1].EnemyCount == 0)
+        if (_wayPoints.Count > _currentWayPoint + 1 && !_wayPoints[_currentWayPoint + 1].EndWayPoint)
         {
-            _currentWayPoint++;
+            var nextWayPoint = _currentWayPoint + 1;
+            _enemyCountInNextWayPoint = _wayPoints[nextWayPoint].EnemyCount;
+            if (_wayPoints[nextWayPoint].EnemyCount == 0)
+            {
+                _currentWayPoint++;
+                var IndexNextStopPoint = _currentWayPoint + 1 < _wayPoints.Count ? _currentWayPoint + 1 : _currentWayPoint;
+                _player.SetPositionNextSopPoint(_wayPoints[IndexNextStopPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
+                _player.MovePlayer(_wayPoints[_currentWayPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
+            }
+        }
+        else
+        {
+            _currentWayPoint = _wayPoints.Count - 1;
+            _player.SetPositionNextSopPoint(Vector3.zero);
             _player.MovePlayer(_wayPoints[_currentWayPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
         }
+    }
+
+    public void Restart()
+    {
+        foreach (var enemy in GameObject.FindObjectsOfType<Enemy>())
+        {
+            Destroy(enemy.gameObject);
+        }
+        foreach (var wayPoint in GameObject.FindObjectsOfType<WayPoint>())
+        {
+            wayPoint.Restart();
+        }
+        _currentWayPoint = 0;
+        _player.transform.position = _wayPoints[_currentWayPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position;
+        _player.SetPositionNextSopPoint(_wayPoints[1].GetComponentInChildren<StopPoint>().gameObject.transform.position);
+        _player.MovePlayer(_wayPoints[0].GetComponentInChildren<StopPoint>().gameObject.transform.position);
     }
 
     //выстрел

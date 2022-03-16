@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     private NavMeshAgent _agent;
     [SerializeField]
     private Bullet _bullet;
+    [SerializeField]
+    private Vector3 _positionRotate;
 
     private void Start()
     {
@@ -21,15 +23,23 @@ public class Player : MonoBehaviour
     private void Update()
     {
         _animator.SetFloat("Velocity", _agent.desiredVelocity.magnitude);
+        if (_positionRotate != Vector3.zero)
+            transform.LookAt(_positionRotate);
     }
 
     public void Shoot(Vector3 direction)
     {
         var spwnPos = GetComponentInChildren<BulletSpawn>().gameObject.transform.position;
-        var bullet = Instantiate(_bullet, spwnPos, Quaternion.identity);
+        var bullet = BulletPooler.Instance.SpawnBullet(spwnPos, Quaternion.identity).GetComponent<Bullet>();
+        // var bullet = Instantiate(_bullet, spwnPos, Quaternion.identity);
         // var bulletInPlane = Instantiate (_bullet, direction, Quaternion.identity);
         Debug.DrawLine(spwnPos, direction, Color.black);
         bullet.Direction = (direction - spwnPos).normalized;
+    }
+
+    public void SetPositionNextSopPoint(Vector3 position)
+    {
+        _positionRotate = position;
     }
 
     public void MovePlayer(Vector3 position)

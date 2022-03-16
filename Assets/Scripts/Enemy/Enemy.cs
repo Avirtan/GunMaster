@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
 
     public void SetDamage(int damage)
     {
+        // Debug.Log("damage " + damage.ToString() + " " + gameObject.name);
         _health -= damage;
         _slider.value = _health / 100;
     }
@@ -31,16 +32,8 @@ public class Enemy : MonoBehaviour
     {
         _animator.enabled = false;
         EnableKinematic(false);
-        _slider.enabled = false;
-        // ForceDeath();
-    }
-
-    private void ForceDeath()
-    {
-        foreach (var rigidbody in _rigidbodies)
-        {
-            rigidbody.AddForce(Vector3.forward * 100);
-        }
+        _slider.gameObject.SetActive(false);
+        gameObject.GetComponentInParent<WayPoint>().RemoveEnemy(this);
     }
 
     private void EnableKinematic(bool enabled)

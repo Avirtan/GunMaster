@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        if (_lifeTime <= 0) Destroy(gameObject);
+        if (_lifeTime <= 0) gameObject.SetActive(false); //Destroy(gameObject);
         else _lifeTime -= Time.deltaTime;
     }
 
@@ -39,6 +39,7 @@ public class Bullet : MonoBehaviour
         if (enemy)
         {
             enemy.SetDamage(_damage);
+            _damage = 0;
             if (enemy.IsDead)
             {
                 enemy.Death();
@@ -46,8 +47,16 @@ public class Bullet : MonoBehaviour
                 dir = -dir.normalized;
                 dir.y = 0f;
                 other.gameObject.GetComponent<Rigidbody>().AddForce(dir * 200, ForceMode.Impulse);
-            } 
+            }
         }
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+
+        // Destroy(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        _damage = 50;
+        _lifeTime = 1.5f;
     }
 }
