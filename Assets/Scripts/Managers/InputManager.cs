@@ -7,7 +7,9 @@ public class InputManager : MonoBehaviour
     public delegate void TouchStartHandler(Vector2 position);
     public delegate void TouchEndHandler();
 #nullable enable
+    // Событие на начало тапа
     static public event TouchStartHandler? onTouchStart;
+    // Событие на конец тапа
     static public event TouchEndHandler? onTouchEnd;
 #nullable disable
     private Vector2 position;
@@ -30,6 +32,10 @@ public class InputManager : MonoBehaviour
             {
                 onTouchEnd?.Invoke();
             }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            onTouchStart?.Invoke(Input.mousePosition);
         }
     }
 }

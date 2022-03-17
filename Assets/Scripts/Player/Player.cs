@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private Bullet _bullet;
     [SerializeField]
     private Vector3 _positionRotate;
+    [SerializeField]
+    private float _speedRotate;
 
     private void Start()
     {
@@ -23,16 +25,21 @@ public class Player : MonoBehaviour
     private void Update()
     {
         _animator.SetFloat("Velocity", _agent.desiredVelocity.magnitude);
-        if (_positionRotate != Vector3.zero)
-            transform.LookAt(_positionRotate);
+        // Поворот в сторону следующей точки остановки
+        if (_positionRotate != Vector3.zero && _agent.desiredVelocity.magnitude == 0)
+        {
+            Vector3 targetDir = _positionRotate - transform.position;
+            //Если надо убрать вращение по оси Y 
+            // targetDir.y = 0.0f;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetDir), Time.time * _speedRotate);
+        }
     }
 
+    // Выстрел и взятие пули из пулла
     public void Shoot(Vector3 direction)
     {
         var spwnPos = GetComponentInChildren<BulletSpawn>().gameObject.transform.position;
         var bullet = BulletPooler.Instance.SpawnBullet(spwnPos, Quaternion.identity).GetComponent<Bullet>();
-        // var bullet = Instantiate(_bullet, spwnPos, Quaternion.identity);
-        // var bulletInPlane = Instantiate (_bullet, direction, Quaternion.identity);
         Debug.DrawLine(spwnPos, direction, Color.black);
         bullet.Direction = (direction - spwnPos).normalized;
     }
@@ -46,5 +53,4 @@ public class Player : MonoBehaviour
     {
         _agent.SetDestination(position);
     }
-
 }

@@ -1,7 +1,6 @@
-//Текущее состояние игры
+//Cостояние игры
 enum StateGame
 {
     Menu,
-    Start,
-    Pause
+    Start
 }

@@ -20,12 +20,14 @@ public class WayPoint : MonoBehaviour
     {
         _enemies.Remove(enemy);
     }
-
     private void Start()
     {
+        // если WayPoint является конечным, то не генерировать врагов
         if (!_endWayPoint) GenerateEnemy();
     }
-
+    //Создание врагов на RespawnEnemy точках, 
+    //так же можно задать поворот врага по оси Y в RespawnEnemy скрипте, 
+    //для корректного поворота врага
     private void GenerateEnemy()
     {
         foreach (var respawn in GetComponentsInChildren<RespawnEnemy>())
@@ -37,7 +39,7 @@ public class WayPoint : MonoBehaviour
             enemy.transform.parent = transform;
         }
     }
-
+    //Обновление всех врагов, при перезапуске уровня
     public void Restart()
     {
         _enemies = new List<Enemy>();

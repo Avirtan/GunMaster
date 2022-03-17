@@ -39,10 +39,13 @@ public class Bullet : MonoBehaviour
         if (enemy)
         {
             enemy.SetDamage(_damage);
+            //сброс урона из-за того, что может быть столкновение с несколькими костями,
+            //так как Ragdoll
             _damage = 0;
             if (enemy.IsDead)
             {
                 enemy.Death();
+                //добавить силу для отталкивания пративника при поподании пули
                 Vector3 dir = other.contacts[0].point - transform.position;
                 dir = -dir.normalized;
                 dir.y = 0f;
@@ -50,10 +53,9 @@ public class Bullet : MonoBehaviour
             }
         }
         gameObject.SetActive(false);
-
-        // Destroy(gameObject);
     }
 
+    //Сброс урона и времени жизни
     private void OnEnable()
     {
         _damage = 50;

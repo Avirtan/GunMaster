@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Основной менеджер отвечающий за уровень
+//Основной класс отвечающий за уровень
 public class LevelManager : MonoBehaviour
 {
     [SerializeField]
@@ -32,6 +32,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
+        //Отслеживания состояние игры
         switch (_stateGame)
         {
             case StateGame.Menu:
@@ -40,32 +41,37 @@ public class LevelManager : MonoBehaviour
                 UpdatePosition();
                 if (_tapPosition != Vector2.zero) Shoot();
                 break;
-            case StateGame.Pause:
-                break;
         }
     }
 
-    //обноваление позиции игра
     private void UpdatePosition()
     {
+        //Проверка если следующий WayPoint не последний, и все враги убиты, то происходит перемещение 
+        //игрока и поворот в сторону следующей точки остановки 
         if (_wayPoints.Count > _currentWayPoint + 1 && !_wayPoints[_currentWayPoint + 1].EndWayPoint)
         {
             var nextWayPoint = _currentWayPoint + 1;
             _enemyCountInNextWayPoint = _wayPoints[nextWayPoint].EnemyCount;
             if (_wayPoints[nextWayPoint].EnemyCount == 0)
             {
-                _currentWayPoint++;
                 var IndexNextStopPoint = _currentWayPoint + 1 < _wayPoints.Count ? _currentWayPoint + 1 : _currentWayPoint;
+                _player.MovePlayer(_wayPoints[IndexNextStopPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
                 _player.SetPositionNextSopPoint(_wayPoints[IndexNextStopPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
-                _player.MovePlayer(_wayPoints[_currentWayPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
             }
         }
         else
         {
+            //Если последний WayPoint
             _currentWayPoint = _wayPoints.Count - 1;
             _player.SetPositionNextSopPoint(Vector3.zero);
             _player.MovePlayer(_wayPoints[_currentWayPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
         }
+    }
+
+    public void UpdateCurrentWayPoint()
+    {
+        _currentWayPoint++;
+        _player.SetPositionNextSopPoint(_wayPoints[_currentWayPoint+1].GetComponentInChildren<StopPoint>().gameObject.transform.position);
     }
 
     public void Restart()

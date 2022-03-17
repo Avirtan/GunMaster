@@ -20,14 +20,15 @@ public class Enemy : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
         EnableKinematic(true);
     }
-
+    
+    //Уменьшить здоровье и обновить полоску здоровья
     public void SetDamage(int damage)
     {
         // Debug.Log("damage " + damage.ToString() + " " + gameObject.name);
         _health -= damage;
         _slider.value = _health / 100;
     }
-
+    //Смерть и включение ragdoll
     public void Death()
     {
         _animator.enabled = false;
@@ -35,7 +36,7 @@ public class Enemy : MonoBehaviour
         _slider.gameObject.SetActive(false);
         gameObject.GetComponentInParent<WayPoint>().RemoveEnemy(this);
     }
-
+     
     private void EnableKinematic(bool enabled)
     {
         foreach (var rigidbody in _rigidbodies)

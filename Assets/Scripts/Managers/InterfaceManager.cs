@@ -6,6 +6,8 @@ public class InterfaceManager : MonoBehaviour
 {
     public delegate void StartGameHandler();
 #nullable enable
+    //Событие на отслеживане начала игры, 
+    //так же можно создать события на выход в меню, для приостановлении игры 
     static public event StartGameHandler? onStartGame;
 #nullable disable
     [SerializeField]
@@ -13,6 +15,7 @@ public class InterfaceManager : MonoBehaviour
 
     private void Start()
     {
+        //Отслеживание нажатия на кнопку старт
         _startButton.onClick.AddListener(StartGame);
     }
 

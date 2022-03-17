@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Класс для хранения пулла пуль
 public class BulletPooler : MonoBehaviour
 {
     [SerializeField]
@@ -10,7 +11,6 @@ public class BulletPooler : MonoBehaviour
     private int _size;
 
     public static BulletPooler Instance;
-
 
     private void Awake()
     {
@@ -40,5 +40,4 @@ public class BulletPooler : MonoBehaviour
         Debug.Log(bulletSpawn);
         return bulletSpawn;
     }
-
 }
