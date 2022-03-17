@@ -439,7 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4c282ed86540eef288c310d09054cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
+  _player: {fileID: 1558633785}
   _wayPoints:
   - {fileID: 1797835481}
   - {fileID: 764522005}
@@ -1316,6 +1316,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 3259158439171681126, guid: b8f799e1c47097de489b35230ae4dd0f, type: 3}
   _size: 30
+--- !u!114 &1558633785 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2793160009762183788, guid: 88f7ccaf54af87299a3ef2df6d54254f, type: 3}
+  m_PrefabInstance: {fileID: 2083276834}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899028f6a5caf8e9a8e93eeec55fd024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1632384451
 GameObject:
   m_ObjectHideFlags: 0
