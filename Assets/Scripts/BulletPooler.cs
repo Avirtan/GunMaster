@@ -37,7 +37,6 @@ public class BulletPooler : MonoBehaviour
         bulletSpawn.transform.position = position;
         bulletSpawn.transform.rotation = rotation;
         poolQueue.Enqueue(bulletSpawn);
-        Debug.Log(bulletSpawn);
         return bulletSpawn;
     }
 }

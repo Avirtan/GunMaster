@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     private Vector3 _positionRotate;
     [SerializeField]
     private float _speedRotate;
+    // [SerializeField]
+    // private 
 
     private void Start()
     {

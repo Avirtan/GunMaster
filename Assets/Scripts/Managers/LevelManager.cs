@@ -21,6 +21,8 @@ public class LevelManager : MonoBehaviour
     private int _currentWayPoint;
     [SerializeField]
     private LayerMask _layer;
+    [SerializeField]
+    private float _delayStop;
 
     private void Start()
     {
@@ -42,6 +44,7 @@ public class LevelManager : MonoBehaviour
                 if (_tapPosition != Vector2.zero) Shoot();
                 break;
         }
+        _delayStop -= Time.deltaTime;
     }
 
     private void UpdatePosition()
@@ -56,22 +59,21 @@ public class LevelManager : MonoBehaviour
             {
                 var IndexNextStopPoint = _currentWayPoint + 1 < _wayPoints.Count ? _currentWayPoint + 1 : _currentWayPoint;
                 _player.MovePlayer(_wayPoints[IndexNextStopPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
-                _player.SetPositionNextSopPoint(_wayPoints[IndexNextStopPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
+                //_player.SetPositionNextSopPoint(_wayPoints[IndexNextStopPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
             }
         }
-        else
+        else if (_wayPoints[_currentWayPoint + 1].EndWayPoint && _delayStop <= 0)
         {
-            //Если последний WayPoint
-            _currentWayPoint = _wayPoints.Count - 1;
-            _player.SetPositionNextSopPoint(Vector3.zero);
-            _player.MovePlayer(_wayPoints[_currentWayPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
+
+            _player.MovePlayer(_wayPoints[_currentWayPoint + 1].GetComponentInChildren<StopPoint>().gameObject.transform.position);
         }
     }
 
     public void UpdateCurrentWayPoint()
     {
+        _delayStop = 1;
         _currentWayPoint++;
-        _player.SetPositionNextSopPoint(_wayPoints[_currentWayPoint+1].GetComponentInChildren<StopPoint>().gameObject.transform.position);
+        _player.SetPositionNextSopPoint(_wayPoints[_currentWayPoint + 1].GetComponentInChildren<StopPoint>().gameObject.transform.position);
     }
 
     public void Restart()
@@ -123,6 +125,7 @@ public class LevelManager : MonoBehaviour
         InputManager.onTouchStart += TapScreenStart;
         InputManager.onTouchEnd += TapScreenEnd;
         InterfaceManager.onStartGame += StartGame;
+        InterfaceManager.onRestartGame += Restart;
     }
 
     private void OnDisable()
@@ -130,5 +133,6 @@ public class LevelManager : MonoBehaviour
         InputManager.onTouchStart -= TapScreenStart;
         InputManager.onTouchEnd -= TapScreenEnd;
         InterfaceManager.onStartGame -= StartGame;
+        InterfaceManager.onRestartGame -= Restart;
     }
 }
