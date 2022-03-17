@@ -7,6 +7,5 @@ public class WayPointEnd : MonoBehaviour
     //Триггер на перезапуск игры
     private void OnTriggerEnter(Collider other) {
         FindObjectOfType<InterfaceManager>().RestartShow();
-
     }
 }

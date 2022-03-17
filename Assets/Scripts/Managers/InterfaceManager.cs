@@ -7,7 +7,7 @@ public class InterfaceManager : MonoBehaviour
     public delegate void StartGameHandler();
     public delegate void RestartGameHandler();
 #nullable enable
-    //Событие на отслеживане начала игры, 
+    //Событие на отслеживане начала игры и рестарт, 
     //так же можно создать события на выход в меню, для приостановлении игры 
     static
      public event StartGameHandler? onStartGame;

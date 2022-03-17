@@ -59,9 +59,9 @@ public class LevelManager : MonoBehaviour
             {
                 var IndexNextStopPoint = _currentWayPoint + 1 < _wayPoints.Count ? _currentWayPoint + 1 : _currentWayPoint;
                 _player.MovePlayer(_wayPoints[IndexNextStopPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
-                //_player.SetPositionNextSopPoint(_wayPoints[IndexNextStopPoint].GetComponentInChildren<StopPoint>().gameObject.transform.position);
             }
         }
+        //Задержка для последней платформы, чтобы был сначала поворт и потом движение
         else if (_wayPoints[_currentWayPoint + 1].EndWayPoint && _delayStop <= 0)
         {
 
